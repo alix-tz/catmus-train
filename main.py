@@ -3,7 +3,7 @@ from src.data import load_data
 from src.models import train_model
 
 def main():
-    parser = argparse.ArgumentParser(description="Train a model on medieval script data")
+    parser = argparse.ArgumentParser(description="Train a transcription model on CATMuS data")
 
     # Add arguments for all kwargs
     parser.add_argument('--shuffle_seed', type=int, default=42, help="Seed for shuffling the data")
@@ -17,17 +17,18 @@ def main():
     parser.add_argument('--version', type=str, default=None, help="Version of the model to save")
     parser.add_argument('--checkpoint', type=str, default=None, help="Path to checkpoint to resume training")
     parser.add_argument('--from_pretrained_model', type=str, default="medieval-data/trocr-medieval-base", help="Path to pretrained model")
-    parser.add_argument('--scripts', type=str, nargs='+', default=["Caroline"], help="List of scripts to train on")
+    parser.add_argument('--writing_type', type=str, nargs='+', default=["handwritten"], help="List of writing type to train on")
 
     args = parser.parse_args()
 
     # Convert argparse Namespace to dictionary
     kwargs = vars(args)
 
-    scripts = kwargs.pop('scripts')
 
-    for script in scripts:
-        train_model.train_model(script=script, **kwargs)
+    writing_types = kwargs.pop('writing_type')
+
+    for writing_type in writing_types:
+        train_model.train_model(writing_type=writing_type, **kwargs)
 
 if __name__ == "__main__":
     main()
