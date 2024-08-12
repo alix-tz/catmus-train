@@ -1,12 +1,15 @@
-# CATMuS Medieval Script Trainer
+# CATMuS Modern Script Trainer
 
 This project provides a training pipeline for models on the [CATMuS Medieval dataset](https://huggingface.co/datasets/CATMuS/medieval), which is a multilingual, multiscript medieval HTR dataset. The training portion comes [largely from this notebook.](https://github.com/NielsRogge/Transformers-Tutorials/blob/master/TrOCR/Fine_tune_TrOCR_on_IAM_Handwriting_Database_using_Seq2SeqTrainer.ipynb) It has been modified to align with CATMuS.
+
+**This branch is an adaptation of the original CATMuS Medieval Scripte Trainer to provide a similar training pipeline for models on the [CATMuS Modern dataset](https://huggingface.co/datasets/CATMuS/modern), which is a multilingual modern dataset mixing handwritten, printed and typewritten documents.**
 
 ## Installation
 
 ```bash
-git clone https://github.com/wjbmattingly/catmus-train
+git clone https://github.com/alix-tz/catmus-train
 cd catmus-train
+git checkout modern
 ```
 
 ```bash
@@ -17,7 +20,7 @@ pip install -r requirements.txt
 ## Usage
 
 ```bash
-python main.py --shuffle_seed 42 --select_range 1000 --batch_size 4 --epochs 10 --logging_steps 1000 --save_steps 1000 --save_limit 2 --compute_cer_flag --device mps:0 --scripts Caroline
+python main.py --shuffle_seed 42 --select_range 1000 --batch_size 4 --epochs 10 --logging_steps 1000 --save_steps 1000 --save_limit 2 --compute_cer_flag --device mps:0 --writing_type handwritten
 ```
 
 ### List of Pre-trained Models
