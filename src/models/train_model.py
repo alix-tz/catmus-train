@@ -12,14 +12,14 @@ def get_next_version(output_dir):
     return next_version
 
 # https://github.com/NielsRogge/Transformers-Tutorials/blob/master/TrOCR/Fine_tune_TrOCR_on_IAM_Handwriting_Database_using_Seq2SeqTrainer.ipynb
-def train_model(script="Cursiva", checkpoint=None, from_pretrained_model="./Caroline", device='cpu', compute_cer_flag=False, version=None, **kwargs):
+def train_model(writing_type="handwritten", checkpoint=None, from_pretrained_model="./Caroline", device='cpu', compute_cer_flag=False, version=None, **kwargs):
     
-    output_dir = f"./{script}"
+    output_dir = f"./{writing_type}"
     if version is None:
         version = get_next_version(output_dir)
-    versioned_output_dir = os.path.join(output_dir, f"{script}_v{version}")
+    versioned_output_dir = os.path.join(output_dir, f"{writing_type}_v{version}")
 
-    dataset = load_data.load_data(script=script, **kwargs)
+    dataset = load_data.load_data(writing_type=writing_type, **kwargs)
     train_dataset, test_dataset = load_data.split_dataset(dataset)
     
     processor = TrOCRProcessor.from_pretrained(from_pretrained_model)

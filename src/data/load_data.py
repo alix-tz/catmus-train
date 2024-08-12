@@ -6,34 +6,33 @@ from PIL import Image
 import numpy as np
 
 def load_data(
-            script=None,
+            writing_type=None,
             lang=None,
             shuffle_seed=None,
             select_range=None,
             split="train",
-            output_columns=["im", "text"], 
+            output_columns=["im", "text"],
             **kwargs
             ):
-
     # load the dataset
-    dataset = load_dataset("CATMuS/medieval", split=split)
+    dataset = load_dataset("CATMuS/modern", split=split)
 
     # Create an index dataset for quicker filtering
-    index_dataset = dataset.select_columns(["script_type", "language"])
+    index_dataset = dataset.select_columns(["writing_type", "language"])
 
     # Generate an index for those columns and map to original dataset
-    index_dataset = index_dataset.map(lambda example, idx: {'original_idx': idx}, with_indices=True)
+    index_dataset = index_dataset.map(lambda example, idx: {"original_idx": idx}, with_indices=True)
 
-    # Filter by script
-    if script:
-        print("Filtering by script...")
-        index_dataset = index_dataset.filter(lambda example, index: example['script_type'] == script, with_indices=True)
+    # Filter by writing_type
+    if writing_type:
+        print("Filtering by writing_type...")
+        index_dataset = index_dataset.filter(lambda example, index: example["writing_type"] == writing_type, with_indices=True)
 
     # Filter by language
     if lang:
         print("Filtering by language...")
-        index_dataset = index_dataset.filter(lambda example, index: example['language'] == lang, with_indices=True)
-    
+        index_dataset = index_dataset.filter(lambda example, index: example["language"] == lang, with_indices=True)
+
     # Optionally randomize the data
     if shuffle_seed:
         index_dataset = index_dataset.shuffle(seed=shuffle_seed)
@@ -44,7 +43,7 @@ def load_data(
             index_dataset = index_dataset.select(range(select_range))
         else:
             print(f"The total dataset is only {len(dataset)}")
-    
+
     # Grab the relevant indices from the original dataset
     dataset = dataset.select(index_dataset["original_idx"])
 
